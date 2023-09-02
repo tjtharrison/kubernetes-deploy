@@ -25,6 +25,26 @@ This can be done by running the following command on each of the servers:
 echo "<username> ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/<username>
 ```
 
+The ansible playbooks deploy metallb as the load balancer for the cluster. This requires that you have a range of IP 
+defined in a config map.
+
+Create a file in the repository named `metallb-config.yaml` with the following contents (replacing the IP addresses):
+
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - 192.168.0.1-192.168.0.100
+```
+
 # Host configuration
 
 ```
