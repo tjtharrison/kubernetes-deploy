@@ -86,6 +86,12 @@
       ansible.builtin.dpkg_selections:
         name: 'kubectl'
         selection: hold
+    # Setup isci for Longhorn
+    - name: Install iscsi and nfs-common
+      apt:
+        name: [ 'open-iscsi', 'nfs-common' ]
+        state: present
+        update_cache: yes
 
 # Ansible playbook to initialize the master node
 - hosts: master
@@ -143,6 +149,7 @@
       command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.10/config/manifests/metallb-native.yaml
       become: yes
       become_user: k8sadmin
+    # Setup Metallb
     - name: Copy metallb config file
       copy:
         src: "{{ playbook_dir }}/metallb-config.yaml"
@@ -158,6 +165,15 @@
       command: kubectl rollout restart deployment controller -n metallb-system
       become_user: k8sadmin
       become: yes
+    # Setup Longhorn
+    - name: Remove taint from master node to allow disk replication
+      command: kubectl taint nodes --all node-role.kubernetes.io/master-
+      become: yes
+      become_user: k8sadmin
+    - name: Install Longhorn
+      command: kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.5.1/deploy/longhorn.yaml
+      become: yes
+      become_user: k8sadmin
     - name: Create dummy host to store variable for node config
       add_host:
         name: "DUMMY_HOST"
