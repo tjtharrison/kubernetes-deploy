@@ -31,18 +31,23 @@ defined in a config map.
 Create a file in the repository named `metallb-config.yaml` with the following contents (replacing the IP addresses):
 
 ```
-apiVersion: v1
-kind: ConfigMap
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
 metadata:
+  name: default
   namespace: metallb-system
-  name: config
-data:
-  config: |
-    address-pools:
-    - name: default
-      protocol: layer2
-      addresses:
-      - 192.168.0.1-192.168.0.100
+spec:
+  addresses:
+    - 192.168.0.150-192.168.0.170
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2advertisement
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+   - default
 ```
 
 # Host configuration
