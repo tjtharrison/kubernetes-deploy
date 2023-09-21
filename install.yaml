@@ -167,7 +167,7 @@
       become: yes
     # Setup Longhorn
     - name: Remove taint from master node to allow disk replication
-      command: kubectl taint nodes --all node-role.kubernetes.io/master-
+      command: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
       become: yes
       become_user: k8sadmin
     - name: Install Longhorn
