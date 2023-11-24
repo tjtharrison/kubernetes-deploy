@@ -146,7 +146,7 @@
       become: yes
       become_user: k8sadmin
     - name: Install metallb
-      command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.10/config/manifests/metallb-native.yaml
+      command: kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.12/config/manifests/metallb-native.yaml
       become: yes
       become_user: k8sadmin
     # Setup Metallb
@@ -171,7 +171,7 @@
       become: yes
       become_user: k8sadmin
     - name: Install Longhorn
-      command: kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.5.1/deploy/longhorn.yaml
+      command: kubectl apply -f https://raw.githubusercontent.com/longhorn/longhorn/v1.5.3/deploy/longhorn.yaml
       become: yes
       become_user: k8sadmin
     - name: Create dummy host to store variable for node config

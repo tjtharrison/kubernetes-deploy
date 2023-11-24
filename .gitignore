@@ -1,3 +1,4 @@
 hosts
 .idea/*
 metallb-config.yaml
+.DS_Store
